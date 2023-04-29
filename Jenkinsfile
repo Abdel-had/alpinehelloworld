@@ -140,12 +140,12 @@ pipeline {
     post {
         success {
             slackSend(message: "${SLACK_DEFAULTS}\nSucceeded",
-                      color: 'good'
+                      color: 'good',
                       baseUrl: "https://i.imgur.com/KWf2cNB.png")
         }
         failure {
             slackSend(message: "${SLACK_DEFAULTS}\nFailed. View console output here: ${env.BUILD_URL}console\nClick here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost",
-                      color: 'danger'
+                      color: 'danger',
                       baseUrl: "https://i.imgur.com/4u9QoDv.png")
         }
     }
