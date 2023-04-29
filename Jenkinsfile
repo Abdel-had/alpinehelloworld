@@ -1,3 +1,5 @@
+def SLACK_DEFAULTS = [channel: '#general', color: 'good', icon_emoji: ':robot_face:', username: 'Jenkins']
+
 pipeline {
     environment {
         IMAGE_NAME = "alpinehelloworld"
@@ -117,22 +119,34 @@ pipeline {
     //         )
     //     }
     // }
+    // post {
+    //   environment {
+    //     def SLACK_DEFAULTS = [    channel: '#general',    color: 'good',    icon_emoji: ':robot_face:',    username: 'Jenkins',]
+    //   }  
+    //     failure {
+    //         slackSend(message: ${SLACK_DEFAULTS} + '\nFailed. View console output here: ${env.BUILD_URL}console\n' +
+    //                   'Click here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost',
+    //             color: "danger",
+    //             baseUrl: "https://i.imgur.com/KWf2cNB.png"
+    //         )
+    //     }
+    //     success { 
+    //         slackSend(message: ${SLACK_DEFAULTS} + '\nSucceeded',
+    //             color: "good",
+    //             baseUrl: "https://i.imgur.com/4u9QoDv.png"
+    //         )
+    //     }
+    // }
     post {
-      environment {
-        def SLACK_DEFAULTS = [    channel: '#general',    color: 'good',    icon_emoji: ':robot_face:',    username: 'Jenkins',]
-      }  
-        failure {
-            slackSend(message: ${SLACK_DEFAULTS} + '\nFailed. View console output here: ${env.BUILD_URL}console\n' +
-                      'Click here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost',
-                color: "danger",
-                baseUrl: "https://i.imgur.com/KWf2cNB.png"
-            )
+        success {
+            slackSend(message: "${SLACK_DEFAULTS}\nSucceeded",
+                      color: 'good'
+                      baseUrl: "https://i.imgur.com/KWf2cNB.png")
         }
-        success { 
-            slackSend(message: ${SLACK_DEFAULTS} + '\nSucceeded',
-                color: "good",
-                baseUrl: "https://i.imgur.com/4u9QoDv.png"
-            )
+        failure {
+            slackSend(message: "${SLACK_DEFAULTS}\nFailed. View console output here: ${env.BUILD_URL}console\nClick here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost",
+                      color: 'danger'
+                      baseUrl: "https://i.imgur.com/4u9QoDv.png")
         }
     }
 }
