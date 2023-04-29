@@ -101,6 +101,7 @@ pipeline {
     }
     post {
         failure {
+            echo "fail step"
             def slackMessage = SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nFailed',
                 color: "danger",
                 thumb_url: "https://i.imgur.com/KWf2cNB.png",
@@ -112,6 +113,7 @@ pipeline {
             slackSend(attachments: slackMessage)
         }
         success {
+            echo "success step"
             def slackMessage = SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nSucceed',
                 color: "good",
                 thumb_url: "https://i.imgur.com/4u9QoDv.png"
