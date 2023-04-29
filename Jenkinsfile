@@ -119,14 +119,14 @@ pipeline {
     // }
     post {
         failure {
-            slackSend(message: SLACK_DEFAULTS['text'] + '\nFailed. View console output here: ${env.BUILD_URL}console\n' +
+            slackSend(message: '\nFailed. View console output here: ${env.BUILD_URL}console\n' +
                       'Click here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost',
                 color: "danger",
                 baseUrl: "https://i.imgur.com/KWf2cNB.png"
             )
         }
         success { 
-            slackSend(message: SLACK_DEFAULTS['text'] + '\nSucceeded',
+            slackSend(message: '\nSucceeded',
                 color: "good",
                 baseUrl: "https://i.imgur.com/4u9QoDv.png"
             )
