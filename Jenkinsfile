@@ -108,7 +108,7 @@ pipeline {
                     [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
                     [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
                 ]
-            ]
+            ] 
             slackSend(attachments: slackMessage)
         }
         success {
