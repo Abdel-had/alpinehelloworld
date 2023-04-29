@@ -103,7 +103,7 @@ pipeline {
         failure {
             slackSend(message: SLACK_DEFAULTS['text'] + '\nFailed',
                 color: "danger",
-                thumb_url: "https://i.imgur.com/KWf2cNB.png",
+                baseUrl: "https://i.imgur.com/KWf2cNB.png",
                 actions: [
                     [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
                     [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
@@ -113,7 +113,7 @@ pipeline {
         success { 
             slackSend(message: SLACK_DEFAULTS['text'] + '\nSucceed',
                 color: "good",
-                thumb_url: "https://i.imgur.com/4u9QoDv.png"
+                baseUrl: "https://i.imgur.com/4u9QoDv.png"
             )
         }
     }
