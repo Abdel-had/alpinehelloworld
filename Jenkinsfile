@@ -1,4 +1,4 @@
-def SLACK_DEFAULTS = [channel: '#notifications-jenkins', color: 'good', iconEmoji: ':robot_face:', username: 'Jenkins']
+def SLACK_DEFAULTS = [channel: '#notifications-jenkins', color: 'good',]
 
 pipeline {
     environment {
