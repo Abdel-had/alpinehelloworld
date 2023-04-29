@@ -99,19 +99,34 @@ pipeline {
             }
         }
     }
+    // post {
+    //     failure {
+    //         slackSend(message: SLACK_DEFAULTS['text'] + '\nFailed',
+    //             color: "danger",
+    //             baseUrl: "https://i.imgur.com/KWf2cNB.png",
+    //             actions: [
+    //                 [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
+    //                 [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
+    //             ]
+    //         )
+    //     }
+    //     success { 
+    //         slackSend(message: SLACK_DEFAULTS['text'] + '\nSucceed',
+    //             color: "good",
+    //             baseUrl: "https://i.imgur.com/4u9QoDv.png"
+    //         )
+    //     }
+    // }
     post {
         failure {
-            slackSend(message: SLACK_DEFAULTS['text'] + '\nFailed',
+            slackSend(message: SLACK_DEFAULTS['text'] + '\nFailed. View console output here: ${env.BUILD_URL}console\n' +
+                      'Click here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost',
                 color: "danger",
-                baseUrl: "https://i.imgur.com/KWf2cNB.png",
-                actions: [
-                    [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
-                    [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
-                ]
+                baseUrl: "https://i.imgur.com/KWf2cNB.png"
             )
         }
         success { 
-            slackSend(message: SLACK_DEFAULTS['text'] + '\nSucceed',
+            slackSend(message: SLACK_DEFAULTS['text'] + '\nSucceeded',
                 color: "good",
                 baseUrl: "https://i.imgur.com/4u9QoDv.png"
             )
