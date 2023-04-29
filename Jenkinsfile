@@ -1,5 +1,3 @@
-def SLACK_DEFAULTS = [channel: '#notifications-jenkins', color: 'good',]
-
 pipeline {
     environment {
         IMAGE_NAME = "alpinehelloworld"
@@ -101,50 +99,12 @@ pipeline {
             }
         }
     }
-    // post {
-    //     failure {
-    //         slackSend(message: SLACK_DEFAULTS['text'] + '\nFailed',
-    //             color: "danger",
-    //             iconUrl: "https://i.imgur.com/KWf2cNB.png",
-    //             actions: [
-    //                 [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
-    //                 [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
-    //             ]
-    //         )
-    //     }
-    //     success { 
-    //         slackSend(message: SLACK_DEFAULTS['text'] + '\nSucceed',
-    //             color: "good",
-    //             iconUrl: "https://i.imgur.com/4u9QoDv.png"
-    //         )
-    //     }
-    // }
-    // post {
-    //   environment {
-    //     def SLACK_DEFAULTS = [    channel: '#general',    color: 'good',    icon_emoji: ':robot_face:',    username: 'Jenkins',]
-    //   }  
-    //     failure {
-    //         slackSend(message: ${SLACK_DEFAULTS} + '\nFailed. View console output here: ${env.BUILD_URL}console\n' +
-    //                   'Click here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost',
-    //             color: "danger",
-    //             iconUrl: "https://i.imgur.com/KWf2cNB.png"
-    //         )
-    //     }
-    //     success { 
-    //         slackSend(message: ${SLACK_DEFAULTS} + '\nSucceeded',
-    //             color: "good",
-    //             iconUrl: "https://i.imgur.com/4u9QoDv.png"
-    //         )
-    //     }
-    // }
     post {
         success {
-            slackSend(message: "${SLACK_DEFAULTS}\nSucceeded",
-                      color: 'good')
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
         failure {
-            slackSend(message: "${SLACK_DEFAULTS}\nFailed. View console output here: ${env.BUILD_URL}console\nClick here to retry: ${env.BUILD_URL}rebuild/parameterized?slack-autopost",
-                      color: 'danger')
-        }
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }   
     }
 }
