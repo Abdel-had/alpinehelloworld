@@ -101,22 +101,20 @@ pipeline {
     }
     post {
         failure {
-            def slackMessage = [SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nFailed',
-                    color: "danger",
-                    thumb_url: "https://i.imgur.com/KWf2cNB.png",
-                    actions: [
-                        [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
-                        [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
-                    ]
+            def slackMessage = SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nFailed',
+                color: "danger",
+                thumb_url: "https://i.imgur.com/KWf2cNB.png",
+                actions: [
+                    [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
+                    [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
                 ]
             ]
             slackSend(attachments: slackMessage)
         }
         success {
-            def slackMessage = [SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nSucceed',
-                    color: "good",
-                    thumb_url: "https://i.imgur.com/4u9QoDv.png"
-                ]
+            def slackMessage = SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nSucceed',
+                color: "good",
+                thumb_url: "https://i.imgur.com/4u9QoDv.png"
             ]
             slackSend(attachments: slackMessage)
         }
