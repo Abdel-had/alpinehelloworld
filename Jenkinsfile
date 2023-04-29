@@ -1,32 +1,3 @@
-import groovy.json.JsonOutput
-
-@NonCPS
- def cancelPreviousBuilds() {
-     def jobName = env.JOB_NAME
-     def buildNumber = env.BUILD_NUMBER.toInteger()
-     def ghPrId = env.ghprbPullId.toInteger()
- 
-     /* Get job name */
-     def currentJob = Jenkins.instance.getItemByFullName(jobName)
- 
-     /* Iterating over the builds for specific job */
-     for (def build : currentJob.builds) {
-         def listener = build.getListener()
-         def ghprbPullId = build.getEnvironment(listener).get('ghprbPullId').toInteger()
- 
-         def exec = build.getExecutor()
-         /* If there is a build that is currently running and it's not current build */
-         if (build.isBuilding() && build.number.toInteger() < buildNumber && exec != null && ghprbPullId == ghPrId) {
-             /* Then stop it */
-             exec.interrupt(
-                     Result.ABORTED,
-                     new CauseOfInterruption.UserInterruption("Aborted by #${currentBuild.number}")
-                 )
-             println("Aborted previously running build #${build.number}")
-         }
-     }
- }
-
 pipeline {
     environment {
         IMAGE_NAME = "alpinehelloworld"
@@ -130,31 +101,24 @@ pipeline {
     }
     post {
         failure {
-            slackSend(attachments: JsonOutput.toJson([SLACK_DEFAULTS + [
-                text: SLACK_DEFAULTS['text'] + '\nFailed',
-                color: "danger",
-                thumb_url: "https://i.imgur.com/KWf2cNB.png",
-                actions: [
-                    [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
-                    [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
+            def slackMessage = [SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nFailed',
+                    color: "danger",
+                    thumb_url: "https://i.imgur.com/KWf2cNB.png",
+                    actions: [
+                        [ type: "button", text: "Console Output", url: "${env.BUILD_URL}console" ],
+                        [ type: "button", text: "Retry", url: "${env.BUILD_URL}rebuild/parameterized?slack-autopost" ]    
+                    ]
                 ]
-            ]]))
+            ]
+            slackSend(attachments: slackMessage)
         }
         success {
-            slackSend(attachments: JsonOutput.toJson([SLACK_DEFAULTS + [
-                text: SLACK_DEFAULTS['text'] + '\nSucceed',
-                color: "good",
-                thumb_url: "https://i.imgur.com/4u9QoDv.png"
-            ]]))
+            def slackMessage = [SLACK_DEFAULTS + [text: SLACK_DEFAULTS['text'] + '\nSucceed',
+                    color: "good",
+                    thumb_url: "https://i.imgur.com/4u9QoDv.png"
+                ]
+            ]
+            slackSend(attachments: slackMessage)
         }
     }
-}  
-//     post {
-//         success {
-//             slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-//         }
-//         failure {
-//             slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-//         }   
-//     }
-// }
+}
