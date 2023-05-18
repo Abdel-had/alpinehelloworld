@@ -33,7 +33,7 @@ Ce fichier de configuration spécifie que supervisord doit lancer les commandes 
 
 Faite lancer supervisord au démarrage :
 
-    sudo systemctl restart supervisord
+    sudo systemctl enable supervisord
 
 Enregistrez et redémarrez supervisord pour prendre en compte la nouvelle configuration :
 
