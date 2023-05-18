@@ -95,11 +95,11 @@ pipeline {
         }
     }
     post {
-        success {
-            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        always {
+            script {
+                // Appelle la fonction partagée slackNotifier avec le résultat de la construction.
+                slackNotifier(currentBuild.result)
+            }
         }
-        failure {
-            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }   
     }
 }
