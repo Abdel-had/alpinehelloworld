@@ -12,8 +12,6 @@ services:
       - 'jenkins_data:/bitnami'
       - '/var/run/docker.sock:/var/run/docker.sock'
       - 'jenkins_home:/var/jenkins_home'
-      - './jenkins-job/config.xml:/var/jenkins_home/jobs/alpinehelloworld/config.xml'
-      - './jenkins-settings/config.xml:/var/jenkins_home/config.xml'
 volumes:
   jenkins_data:
     driver: local
