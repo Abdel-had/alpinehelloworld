@@ -41,13 +41,8 @@ pipeline {
                 expression { GIT_BRANCH == 'origin/master' }
             }
             steps {
-                withCredentials([string(credentialsId: 'private_registry_pass', variable: 'DOCKER_PASSWORD')]) {
-                    sh '''
-                        docker image tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY_DOMAIN}/${COMPANY_NAME}/${IMAGE_NAME}:${IMAGE_TAG}
-                        docker login ${REGISTRY_DOMAIN} -u ${COMPANY_NAME} -p ${DOCKER_PASSWORD}
-                        docker push ${REGISTRY_DOMAIN}/${COMPANY_NAME}/${IMAGE_NAME}:${IMAGE_TAG}
-                    '''
-                }
+                // Appelle la fonction partagée pushImage avec les variables nécessaires
+                pushImage(REGISTRY_DOMAIN, COMPANY_NAME, IMAGE_NAME, IMAGE_TAG)
             }
         }
         stage('Remove docker cache') {
